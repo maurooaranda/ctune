@@ -5,7 +5,7 @@
 ;; Author: Mauro Aranda <maurooaranda@gmail.com>
 ;; Version: 0.1
 ;; Package-Requires: ((emacs "26.1"))
-;; Keywords: C cc-mode convenience
+;; Keywords: c cc-mode convenience
 ;; URL: https://github.com/maurooaranda/ctune
 ;; Created: 20 May 2019.
 
