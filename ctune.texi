@@ -57,7 +57,7 @@ This manual describes the 0.1 version of ctune.
 * Index:: An item for each definition in this manual.
 @end menu
 
-@node Overview, Using, Top, Top
+@node Overview
 @chapter Overview
 
 @cindex noise macros

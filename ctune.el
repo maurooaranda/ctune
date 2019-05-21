@@ -6,7 +6,7 @@
 ;; Version: 0.1
 ;; Package-Requires: ((emacs "26.1"))
 ;; Keywords: C cc-mode convenience
-;; URL: http://github.com/maurooaranda
+;; URL: https://github.com/maurooaranda/ctune
 ;; Created: 20 May 2019.
 
 ;; This file is NOT part of GNU Emacs.
@@ -25,6 +25,8 @@
 ;; along with ctune.  If not, see <https://www.gnu.org/licenses/>.
 
 ;;; Commentary:
+
+;; ctune: A package to tune out CC Mode Noise Macros.
 
 ;; When working with projects that extensively use C Macros, the C file you
 ;; are editing can contain 'Noise Macros' (e.g., C Macros that define GCC
