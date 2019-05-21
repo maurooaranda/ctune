@@ -4,6 +4,7 @@
 
 ;; Author: Mauro Aranda <maurooaranda@gmail.com>
 ;; Version: 0.1
+;; Package-Version: 0.1
 ;; Package-Requires: ((emacs "26.1"))
 ;; Keywords: c convenience
 ;; URL: https://github.com/maurooaranda/ctune
