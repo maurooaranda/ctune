@@ -1,0 +1,126 @@
+input texinfo.tex @c -*-texinfo-*-
+@c %**start of header
+@setfilename ctune.info
+@settitle ctune Manual
+@include docstyle.texi
+@syncodeindex fn cp
+@syncodeindex vr cp
+@c %**end of header
+
+@copying
+Copyright @copyright{} 2019 Mauro Aranda.
+
+@quotation
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with no
+Invariant Sections, with the Front-Cover Texts being ``A GNU Manual'',
+and with the Back-Cover Texts as in (a) below.  A copy of the license
+is included in the section entitled ``GNU Free Documentation License''.
+
+(a) The FSF's Back-Cover Text is: ``You have the freedom to copy and
+modify this GNU manual.''
+@end quotation
+@end copying
+
+@dircategory Emacs misc features
+@direntry
+* ctune: (ctune).    Tune out those C Noise Macros
+@end direntry
+
+@titlepage
+@title ctune
+@subtitle Package to easily add and remove CC Mode Noise Macros
+
+@author Mauro Aranda
+@page
+
+@vskip 0pt plus 1filll
+@insertcopying
+@end titlepage
+
+@ifnottex
+
+@node Top
+@top ctune
+
+This manual describes the 0.1 version of ctune.
+
+@insertcopying
+@end ifnottex
+
+@menu
+* Overview:: An overview of the package.
+* Using:: How to use ctune.
+* Customizing:: How to customize ctune.
+* GNU Free Documentation License:: The license this documentation.
+* Index:: An item for each definition in this manual.
+@end menu
+
+@node Overview, Using, Top, Top
+@chapter Overview
+
+@cindex noise macros
+With Emacs 26, CC Mode introduced CC Noise Macros (@pxref{Noise Macros,,,ccmode,CC Mode Manual}), and allowed the user to specify strings of those
+identifiers, in order to help CC Mode with getting fontification and
+indentation right.  This package helps you to easily add CC Noise Macros
+project-wide when you found them, by combining the facilities provided by
+CC Mode and directory variables of Emacs (@pxref{Directory Variables,,,emacs,The Emacs Editor}).
+
+@node Using
+@chapter Using
+
+@findex ctune-add-noise-macro
+Using @code{ctune} is quite easy.  To add a CC Noise Macro, all you have to do
+is navigate to the identifier and execute the command @code{ctune-add-noise-macro}.  This will add the identifier as a string to the lists mantained by CC Mode.
+If instead you want to remove an identifier from those lists, you give a
+prefix argument to @code{ctune-add-noise-macro}.
+
+@vindex ctune-save-noise-macros-automatically
+@fnindex ctune-save-noise-macros
+If the CC Noise Macros values have changed during the editing of the C Mode
+buffer, you might want to save those changes, to take effect project-wide
+in your next editing session.  The automatic saving is controlled by the
+customizable variable @code{ctune-save-noise-macros-automatically}.  It can hold
+three different values:
+When set to @code{t}, always save the changes to @code{.dir-locals.el}, when
+killing the buffer (@pxref{Kill Buffer,,,emacs,The Emacs Editor}) or killing
+Emacs (@pxref{Exiting,,,emacs,The Emacs Editor}).
+When set to @code{'ask}, you'll be prompted about saving the changes, either
+when killing the buffer or killing Emacs.
+When set to @code{nil}, @code{ctune} won't save automatically any changes and
+you are responsible for saving those changes, by executing the command
+@code{ctune-save-noise-macros}.
+
+If @code{.dir-locals.el} is not found when trying to save, it will be created
+for you.
+
+@node Customizing
+@chapter Customizing
+
+These are the variables that you can customize to adapt @code{ctune} to
+your use.
+
+@defvar ctune-save-noise-macros-automatically
+Control how the saving of CC Noise Macros is done.  The default value is
+@code{'ask}.
+@end defvar
+
+@defvar ctune-kbd-alist
+Association list of keybindings to use for @code{ctune}.  Each element has the
+form @var{(KEYS . VALUE)}, where @var{keys} are the commands provided by
+@code{ctune} and @var{value} are the keybindings to make.  By default, it is
+proposed the @kbd{C-c C-#} for @code{c-add-noise-macro}.
+@end defvar
+
+@node GNU Free Documentation License
+@appendix GNU Free Documentation License
+@include doclicense.texi
+
+@node Index
+@unnumbered Index
+@printindex cp
+
+@bye
+
+@c End.
