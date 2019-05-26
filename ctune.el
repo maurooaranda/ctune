@@ -197,6 +197,25 @@ With optional argument REMOVEP non-nil, remove it."
   (write-file (expand-file-name buffer-file-name) nil)
   (kill-buffer))
 
+(defun ctune-save-noise-macros-maybe ()
+  "Save Noise Macros, if the user wants to.
+Only ask the user when `ctune-save-noise-macros-automatically' is 'ask.
+This function is hooked into `kill-buffer-hook' and `kill-emacs-hook'."
+  ;; Don't even bother checking the values, if user doesn't want to save.
+  (when ctune-save-noise-macros-automatically
+    (if (cl-set-exclusive-or ctune-prev-noise-macro-names
+			     c-noise-macro-names :test #'equal)
+	(add-to-list 'ctune-save-these-vars 'without-parens))
+    (if (cl-set-exclusive-or ctune-prev-noise-macro-with-parens-names
+			     c-noise-macro-with-parens-names :test #'equal)
+	(add-to-list 'ctune-save-these-vars 'with-parens))
+    (and ctune-save-these-vars
+	 (or (eq ctune-save-noise-macros-automatically t)
+	     (yes-or-no-p
+	      (format
+	       "Save the C Noise Macros to the directory locals file? ")))
+	 (ctune-save-noise-macros))))
+
 ;; Commands:
 
 ;;;###autoload
@@ -266,27 +285,6 @@ as `add-dir-local-variable' would do interactively."
 	  (ctune-save-directory-variable 'c-mode
 					 'c-noise-macro-with-parens-names)))))
   (ctune--reset-values))
-
-;; Hook into Emacs:
-
-(defun ctune-save-noise-macros-maybe ()
-  "Save Noise Macros, if the user wants to.
-Only ask the user when `ctune-save-noise-macros-automatically' is 'ask.
-This function is hooked into `kill-buffer-hook' and `kill-emacs-hook'."
-  ;; Don't even bother checking the values, if user doesn't want to save.
-  (when ctune-save-noise-macros-automatically
-    (if (cl-set-exclusive-or ctune-prev-noise-macro-names
-			     c-noise-macro-names :test #'equal)
-	(add-to-list 'ctune-save-these-vars 'without-parens))
-    (if (cl-set-exclusive-or ctune-prev-noise-macro-with-parens-names
-			     c-noise-macro-with-parens-names :test #'equal)
-	(add-to-list 'ctune-save-these-vars 'with-parens))
-    (and ctune-save-these-vars
-	 (or (eq ctune-save-noise-macros-automatically t)
-	     (yes-or-no-p
-	      (format
-	       "Save the C Noise Macros to the directory locals file? ")))
-	 (ctune-save-noise-macros))))
 
 ;; Minor mode:
 
