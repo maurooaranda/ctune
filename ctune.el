@@ -122,7 +122,9 @@ killing the buffer or killing Emacs."
 KEYS are the command names, while VALUES are the strings that represent the
 keybinding to bind to the command."
   :type 'alist
-  :group 'ctune)
+  :group 'ctune
+  :version "26.1"
+  :package-version '(ctune . "0.1"))
 
 ;; Variables:
 
