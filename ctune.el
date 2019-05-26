@@ -119,7 +119,7 @@ killing the buffer or killing Emacs."
 
 (defcustom ctune-kbd-alist
   '((ctune-add-noise-macro . "C-c C-#"))
-  "Association list of keybindings of ctune.
+  "Association list of keybindings for the minor mode `ctune-mode'.
 KEYS are the command names, while VALUES are the strings that represent the
 keybinding to bind to the command."
   :type 'alist
@@ -268,7 +268,7 @@ as `add-dir-local-variable' would do interactively."
 					 'c-noise-macro-with-parens-names)))))
   (ctune--reset-values))
 
-;;; Hook into CC Mode:
+;; Hook into Emacs:
 
 (defun ctune-save-noise-macros-maybe ()
   "Save Noise Macros, if the user wants to.
@@ -289,37 +289,59 @@ This function is hooked into `kill-buffer-hook' and `kill-emacs-hook'."
 	       "Save the C Noise Macros to the directory locals file? ")))
 	 (ctune-save-noise-macros))))
 
-(defun ctune-hack-local-variables ()
-  "Get original C Noise Macros, when finding the file.
-The function is intended for the `hack-local-variables-hook', and saves the
-values of `c-noise-macro-names' and `c-noise-macro-with-parens-names' for later
-use."
-  (setq-local ctune-prev-noise-macro-names c-noise-macro-names)
-  (setq-local ctune-prev-noise-macro-with-parens-names
-	      c-noise-macro-with-parens-names))
+;; Minor mode:
 
-(defun ctune-initialize ()
-  "Hook into `c-initialization-hook' and define keys to the `c-mode-map'."
-  (let (binding)
+(defvar ctune-minor-mode-map
+  (let ((map (make-sparse-keymap))
+	binding)
     (when (setq binding (cdr (assq 'ctune-add-noise-macro ctune-kbd-alist)))
-      (define-key c-mode-map (kbd binding) #'ctune-add-noise-macro))
+      (define-key map (kbd binding) #'ctune-add-noise-macro))
     (when (setq binding (cdr (assq 'ctune-save-noise-macros ctune-kbd-alist)))
-      (define-key c-mode-map (kbd binding) #'ctune-save-noise-macros))))
+      (define-key map (kbd binding) #'ctune-save-noise-macros))
+    map)
+  "Keymap for `ctune-mode'.
+The keybindings can be customized by modifying the user option
+`ctune-kbd-alist'.")
 
-(defun ctune-install ()
-  "Install ctune into CC Mode and the C Mode buffer."
-  ;; Add the ctune function for saving Noise Macros.
-  (dolist (hook '(kill-buffer-hook kill-emacs-hook))
-    (add-hook hook #'ctune-save-noise-macros-maybe nil t))
-  ;; Hook into `hack-local-variables-hook', because this function will be run
-  ;; before local variables have been set.
-  ;; FIXME: This means we get local variables, and a change in them makes us
-  ;; save them in .dir-locals.el.  But shouldn't be too bad, and what else
-  ;; can we do??
-  (add-hook 'hack-local-variables-hook #'ctune-hack-local-variables nil t))
-
-(add-hook 'c-initialization-hook #'ctune-initialize)
-(add-hook 'c-mode-hook #'ctune-install)
+;;;###autoload
+(define-minor-mode ctune-mode
+  "Minor mode for easily managing C Noise Macros, project-wide.
+To add a C Noise Macro, navigate to the identifier and type
+\\[ctune-add-noise-macro].  If you want to
+remove the identifier from the C Noise Macro lists, just pass a prefix argument
+to the `ctune-add-noise-macro' command.
+For saving the changes, either customize the option
+`ctune-save-noise-macros-automatically' to a value of your choice, or use the
+command `ctune-save-noise-macros'.  This command will save the changed values
+of `c-noise-macro-names' and `c-noise-macro-with-parens-names' to the
+correspondent .dir-locals.el file."
+  :lighter " ctune" :group 'ctune :keymap ctune-minor-mode-map
+  (if (derived-mode-p 'c-mode)
+      (if ctune-mode
+	  (progn
+	    ;; In order to work either when `ctune-mode' is activated from
+	    ;; `c-mode-hook' or being toggled on in an already loaded C Mode
+	    ;; buffer, we need the `dir-local-variables-alist' to be updated.
+	    ;; If we don't do this, we can end up saving a stale value of
+	    ;; CC Noise Macros in `ctune-prev-noise-macro-names' and
+	    ;; `ctune-prev-noise-macro-with-parens-names'.
+	    (hack-dir-local-variables)
+	    ;; We need a copy of the lists, and not the actual list,
+	    ;; so that changes are independent.
+	    (setq-local ctune-prev-noise-macro-names
+			(copy-sequence
+			 (cdr (assq 'c-noise-macro-names
+				    dir-local-variables-alist))))
+	    (setq-local ctune-prev-noise-macro-with-parens-names
+			(copy-sequence
+			 (cdr (assq 'c-noise-macro-with-parens-names
+				    dir-local-variables-alist))))
+	    ;; Add the ctune function for saving Noise Macros.
+	    (dolist (hook '(kill-buffer-hook kill-emacs-hook))
+	      (add-hook hook #'ctune-save-noise-macros-maybe nil t)))
+	(dolist (hook '(kill-buffer-hook kill-emacs-hook))
+	  (remove-hook hook #'ctune-save-noise-macros-maybe t)))
+    (error "Not in a C Mode buffer!")))
 
 (provide 'ctune)
 
