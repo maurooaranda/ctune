@@ -64,7 +64,7 @@ This manual describes the 0.1 version of ctune.
 With Emacs 26, CC Mode introduced CC Noise Macros (@pxref{Noise Macros,,,ccmode,CC Mode Manual}), and allowed the user to specify strings of those
 identifiers, in order to help CC Mode with getting fontification and
 indentation right.  This package helps you to easily add CC Noise Macros
-project-wide when you found them, by combining the facilities provided by
+project-wide when you find them, by combining the facilities provided by
 CC Mode and directory variables of Emacs (@pxref{Directory Variables,,,emacs,The Emacs Editor}).
 
 @node Using
