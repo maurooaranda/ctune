@@ -84,6 +84,7 @@ Other way of activating @code{ctune-mode} is by calling
 former calls toggles the state of the minor mode.  The recommended way
 of using this function call is to activate @code{ctune-mode} when the
 @code{c-mode-hook} hook is run:
+
 @example
 (require 'ctune)
 (add-hook 'c-mode-hook (lambda () (ctune-mode 1)))
