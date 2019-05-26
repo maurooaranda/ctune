@@ -7,7 +7,7 @@
 ;; Package-Version: 0.1
 ;; Package-Requires: ((emacs "26.1"))
 ;; Keywords: c convenience
-;; URL: https://github.com/maurooaranda/ctune
+;; URL:  https://github.com/maurooaranda/ctune
 ;; Created: 20 May 2019.
 
 ;; This file is NOT part of GNU Emacs.
@@ -105,7 +105,7 @@
 ;; Maybe users don't want to write to .dir-locals.el, so let them choose.
 (defcustom ctune-save-noise-macros-automatically 'ask
   "Specify how saving of C Noise Macros in `dir-locals-file' is done.
-With a value of nil, ctune does't modify never the `dir-locals-file', unless
+With a value of nil, ctune doesn't modify never the `dir-locals-file', unless
 you execute `ctune-save-noise-macros'.  With a value of t, ctune saves the
 new values of the C Noise Macros when killing the buffer or killing Emacs.
 When set to 'ask, you will be prompted about saving the new values when
@@ -128,8 +128,8 @@ keybinding to bind to the command."
 ;; Variables:
 
 ;; The following variables are useful for checking if there was a modification
-;; in the Noise Macros values.  This way, we avoid unnecesary saving, and/or
-;; unnecesary prompting.
+;; in the Noise Macros values.  This way, we avoid unnecessary saving, and/or
+;; unnecessary prompting.
 (defvar ctune-prev-noise-macro-names nil
   "Hold the previous (or first) value of `c-noise-macro-names'.")
 
@@ -149,7 +149,7 @@ That is, can contain nil, 'with-parens, 'without-parens or both.")
 (defun ctune-symbol-at-point-strict (&optional no-properties)
   "Find the symbol at point, returning it as a string.
 Doesn't report a symbol on a whitespace, as `thing-at-point' does in some
-occassions.
+occasions.
 Argument NO-PROPERTIES means the same as in `thing-at-point'."
   (let ((orig (point))
 	text beg end)
