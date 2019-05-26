@@ -92,7 +92,6 @@
 ;; Silence the byte compiler.
 (defvar c-noise-macro-names)
 (defvar c-noise-macro-with-parens-names)
-(defvar c-mode-map)
 
 (declare-function c-make-noise-macro-regexps "cc-vars.el")
 
