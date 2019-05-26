@@ -1,7 +1,7 @@
 # ctune: Tune out CC Noise Macros
 
-> Help CC Mode get the right indentation and fontification, by
-  specifying Noise Macros.  
+> Minor mode to help CC Mode get the right indentation and fontification,
+by specifying Noise Macros.
 
 ## Table of Contents
 
@@ -41,6 +41,9 @@ Other way to build the file is to execute:
 
 Require the file in your .init file:
 (require 'ctune)
+
+To activate the minor mode, either type `M-x ctune-mode`, or eval
+`(ctune-mode 1)`
 
 When editing a C buffer with Noise Macros, type `C-c C-#` to tell CC
 Mode that the identifier at point is a Noise Macro.
