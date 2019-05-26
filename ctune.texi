@@ -70,6 +70,25 @@ CC Mode and directory variables of Emacs (@pxref{Directory Variables,,,emacs,The
 @node Using
 @chapter Using
 
+@findex ctune-mode
+@vindex ctune-mode
+The @code{ctune} package defines a minor mode, @code{ctune-mode} that
+makes the addition and removal of CC Noise Macros easy.  To use it,
+you can toggle @code{ctune-mode} on, by typing @code{M-x ctune-mode}
+in an already loaded C Mode Buffer (a prefix argument positive always
+activates the minor mode, while a negative one always disables it).
+When @code{ctune-mode} is active, a string ``ctune'' is visible in the
+mode line.
+Other way of activating @code{ctune-mode} is by calling
+@code{(ctune-mode)} with a positive argument.  With no argument, the
+former calls toggles the state of the minor mode.  The recommended way
+of using this function call is to activate @code{ctune-mode} when the
+@code{c-mode-hook} hook is run:
+@example
+(require 'ctune)
+(add-hook 'c-mode-hook (lambda () (ctune-mode 1)))
+@end example
+
 @findex ctune-add-noise-macro
 Using @code{ctune} is quite easy.  To add a CC Noise Macro, all you have to do
 is navigate to the identifier and execute the command @code{ctune-add-noise-macro}.  This will add the identifier as a string to the lists mantained by CC Mode.
@@ -110,7 +129,12 @@ Control how the saving of CC Noise Macros is done.  The default value is
 Association list of keybindings to use for @code{ctune}.  Each element has the
 form @var{(KEYS . VALUE)}, where @var{keys} are the commands provided by
 @code{ctune} and @var{value} are the keybindings to make.  By default, it is
-proposed the @kbd{C-c C-#} for @code{c-add-noise-macro}.
+proposed the keybinding @kbd{C-c C-#} for @code{c-add-noise-macro}.
+@end defvar
+
+@defvar ctune-minor-mode-map
+This is the keymap of @code{ctune-mode}.  You can modify the
+keybindings using Customize, or with Lisp code in your init file.
 @end defvar
 
 @node GNU Free Documentation License
