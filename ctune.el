@@ -275,19 +275,19 @@ as `add-dir-local-variable' would do interactively."
     (let ((already-checked (not (called-interactively-p 'any))))
       (if already-checked
 	  (when (memq 'without-parens ctune-save-these-vars)
-	    (ctune-save-directory-variable 'c-mode 'c-noise-macro-names))
+	    (ctune-save-directory-variable major-mode 'c-noise-macro-names))
 	(when (cl-set-exclusive-or ctune-prev-noise-macro-names
 				   c-noise-macro-names
 				   :test #'equal)
-	  (ctune-save-directory-variable 'c-mode 'c-noise-macro-names)))
+	  (ctune-save-directory-variable major-mode 'c-noise-macro-names)))
       (if already-checked
 	  (when (memq 'with-parens ctune-save-these-vars)
-	    (ctune-save-directory-variable 'c-mode
+	    (ctune-save-directory-variable major-mode
 					   'c-noise-macro-with-parens-names))
 	(when (cl-set-exclusive-or ctune-prev-noise-macro-with-parens-names
 				   c-noise-macro-with-parens-names
 				   :test #'equal)
-	  (ctune-save-directory-variable 'c-mode
+	  (ctune-save-directory-variable major-mode
 					 'c-noise-macro-with-parens-names)))))
   (ctune--reset-values))
 
