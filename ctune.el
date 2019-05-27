@@ -214,9 +214,17 @@ This function is hooked into `kill-buffer-hook' and `kill-emacs-hook'."
 	(add-to-list 'ctune-save-these-vars 'with-parens))
     (if (and ctune-save-these-vars
 	     (or (eq ctune-save-noise-macros-automatically t)
-		 (yes-or-no-p
-		  (format
-		   "Save the C Noise Macros to the directory locals file? "))))
+		 (let* ((dir-or-cache (dir-locals-find-file buffer-file-name))
+			(dir-name (cond
+				   ((stringp dir-or-cache)
+				    dir-or-cache)
+				   ((consp dir-or-cache)
+				    (car dir-or-cache))
+				   (t nil))))
+		   (yes-or-no-p
+		    (format
+		     "Save the CC Noise Macros to %s? "
+		     (file-relative-name dir-locals-file dir-name))))))
 	(ctune-save-noise-macros)
       ;; If we didn't save, but `ctune-save-these-vars' was filled with some
       ;; values, we reset it here.
