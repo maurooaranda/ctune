@@ -327,7 +327,7 @@ command `ctune-save-noise-macros'.  This command will save the changed values
 of `c-noise-macro-names' and `c-noise-macro-with-parens-names' to the
 correspondent .dir-locals.el file."
   :lighter " ctune" :group 'ctune :keymap ctune-minor-mode-map
-  (if (derived-mode-p 'c-mode)
+  (if (memq major-mode '(c-mode c++-mode objc-mode))
       (if ctune-mode
 	  (progn
 	    ;; In order to work either when `ctune-mode' is activated from
@@ -358,7 +358,7 @@ correspondent .dir-locals.el file."
 	      (add-hook hook #'ctune-save-noise-macros-maybe nil t)))
 	(dolist (hook '(kill-buffer-hook kill-emacs-hook))
 	  (remove-hook hook #'ctune-save-noise-macros-maybe t)))
-    (error "Not in a C Mode buffer!")))
+    (error "Major mode %s not supported!" major-mode)))
 
 (provide 'ctune)
 
