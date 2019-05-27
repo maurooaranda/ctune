@@ -131,6 +131,7 @@ keybinding to bind to the command."
 ;; The following variables are useful for checking if there was a modification
 ;; in the Noise Macros values.  This way, we avoid unnecessary saving, and/or
 ;; unnecessary prompting.
+;; Both variables are made local when activating the minor mode.
 (defvar ctune-prev-noise-macro-names nil
   "Hold the previous (or first) value of `c-noise-macro-names'.")
 
@@ -211,12 +212,15 @@ This function is hooked into `kill-buffer-hook' and `kill-emacs-hook'."
     (if (cl-set-exclusive-or ctune-prev-noise-macro-with-parens-names
 			     c-noise-macro-with-parens-names :test #'equal)
 	(add-to-list 'ctune-save-these-vars 'with-parens))
-    (and ctune-save-these-vars
-	 (or (eq ctune-save-noise-macros-automatically t)
-	     (yes-or-no-p
-	      (format
-	       "Save the C Noise Macros to the directory locals file? ")))
-	 (ctune-save-noise-macros))))
+    (if (and ctune-save-these-vars
+	     (or (eq ctune-save-noise-macros-automatically t)
+		 (yes-or-no-p
+		  (format
+		   "Save the C Noise Macros to the directory locals file? "))))
+	(ctune-save-noise-macros)
+      ;; If we didn't save, but `ctune-save-these-vars' was filled with some
+      ;; values, we reset it here.
+      (setq ctune-save-these-vars nil))))
 
 ;; Commands:
 
@@ -335,6 +339,12 @@ correspondent .dir-locals.el file."
 			(copy-sequence
 			 (cdr (assq 'c-noise-macro-with-parens-names
 				    dir-local-variables-alist))))
+	    ;; If `c-noise-macro-names' or/and `c-noise-macro-with-parens-names'
+	    ;; haven't been made local (e.g., there's no entry for them
+	    ;; in .dir-locals.el, or in the file local variables, we made them
+	    ;; local here.
+	    (make-local-variable 'c-noise-macro-names)
+	    (make-local-variable 'c-noise-macro-with-parens-names)
 	    ;; Add the ctune function for saving Noise Macros.
 	    (dolist (hook '(kill-buffer-hook kill-emacs-hook))
 	      (add-hook hook #'ctune-save-noise-macros-maybe nil t)))
