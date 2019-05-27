@@ -233,8 +233,8 @@ Warning: DO NOT call it when point is not in a macro name, you will confuse it.
 CC Mode imposes no limits on what you can put as a Noise Macro, and neither
 does this command."
   (interactive "P")
-  (unless (derived-mode-p 'c-mode)
-    (error "Not in a C buffer!"))
+  (unless (memq major-mode '(c-mode c++-mode objc-mode))
+    (error "Major mode %s not supported!" major-mode))
   (let ((name (if (nth 8 (syntax-ppss)) ; Are we in a string or a comment?
 		  (error "Point can't be at a comment or a string!")
 		;; Don't use `thing-at-point', because it has troubles when
@@ -262,8 +262,8 @@ does this command."
 Saves the values of `c-noise-macro-names' and `c-noise-macro-with-parens-names'
 as `add-dir-local-variable' would do interactively."
   (interactive)
-  (unless (derived-mode-p 'c-mode)
-    (error "Not in a C buffer!"))
+  (unless (memq major-mode '(c-mode c++-mode objc-mode))
+    (error "Major mode %s not supported!" major-mode))
   (save-excursion
     ;; No point in writing a loop for this two variables.  But sadly, we need
     ;; to write the file and kill the buffer each time.
