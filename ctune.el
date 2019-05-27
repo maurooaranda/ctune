@@ -358,6 +358,7 @@ correspondent .dir-locals.el file."
 	      (add-hook hook #'ctune-save-noise-macros-maybe nil t)))
 	(dolist (hook '(kill-buffer-hook kill-emacs-hook))
 	  (remove-hook hook #'ctune-save-noise-macros-maybe t)))
+    (setq ctune-mode nil)
     (error "Major mode %s not supported!" major-mode)))
 
 (provide 'ctune)
