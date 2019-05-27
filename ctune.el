@@ -307,10 +307,10 @@ The keybindings can be customized by modifying the user option
 
 ;;;###autoload
 (define-minor-mode ctune-mode
-  "Minor mode for easily managing C Noise Macros, project-wide.
-To add a C Noise Macro, navigate to the identifier and type
+  "Minor mode for easily managing CC Noise Macros, project-wide.
+To add a CC Noise Macro, navigate to the identifier and type
 \\[ctune-add-noise-macro].  If you want to
-remove the identifier from the C Noise Macro lists, just pass a prefix argument
+remove the identifier from the CC Noise Macro lists, just pass a prefix argument
 to the `ctune-add-noise-macro' command.
 For saving the changes, either customize the option
 `ctune-save-noise-macros-automatically' to a value of your choice, or use the
@@ -322,8 +322,8 @@ correspondent .dir-locals.el file."
       (if ctune-mode
 	  (progn
 	    ;; In order to work either when `ctune-mode' is activated from
-	    ;; `c-mode-hook' or being toggled on in an already loaded C Mode
-	    ;; buffer, we need the `dir-local-variables-alist' to be updated.
+	    ;; `c-mode-hook' or being toggled on in an already loaded buffer,
+	    ;; we need the `dir-local-variables-alist' to be updated.
 	    ;; If we don't do this, we can end up saving a stale value of
 	    ;; CC Noise Macros in `ctune-prev-noise-macro-names' and
 	    ;; `ctune-prev-noise-macro-with-parens-names'.
