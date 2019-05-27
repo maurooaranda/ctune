@@ -103,10 +103,10 @@
 
 ;; Maybe users don't want to write to .dir-locals.el, so let them choose.
 (defcustom ctune-save-noise-macros-automatically 'ask
-  "Specify how saving of C Noise Macros in `dir-locals-file' is done.
+  "Specify how saving of CC Noise Macros in `dir-locals-file' is done.
 With a value of nil, ctune doesn't modify never the `dir-locals-file', unless
 you execute `ctune-save-noise-macros'.  With a value of t, ctune saves the
-new values of the C Noise Macros when killing the buffer or killing Emacs.
+new values of the CC Noise Macros when killing the buffer or killing Emacs.
 When set to 'ask, you will be prompted about saving the new values when
 killing the buffer or killing Emacs."
   :type '(choice (const :tag "Never" nil)
@@ -188,7 +188,8 @@ With optional argument REMOVEP non-nil, remove it."
 	(c-make-noise-macro-regexps)
 	(message "%s removed from Noise Macros" macro-name))
     ;; Don't unify the (message ...) thing, because we want to report the action
-    ;; if we are sure we updated the C Noise Macros, and not only the variables.
+    ;; if we are sure we updated the CC Noise Macros,
+    ;; and not only the variables.
     (add-to-list macro-names-list macro-name t)
     (c-make-noise-macro-regexps)
     (message "%s added to Noise Macros" macro-name)))
