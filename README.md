@@ -50,7 +50,7 @@ Mode that the identifier at point is a Noise Macro.
 Optionally save the values accumulated to the .dir-locals.el file,
 with `M-x ctune-save-noise-macros`.
 
-Read the ctunel.info manual, for more.
+Read the ctune.info manual, for more.
 
 ---
 
