@@ -323,7 +323,7 @@ correspondent `dir-locals-file'."
       (if ctune-mode
 	  (progn
 	    ;; In order to work either when `ctune-mode' is activated from
-	    ;; `c-mode-hook' or being toggled on in an already loaded buffer,
+	    ;; a CC Mode hook or being toggled on in an already loaded buffer,
 	    ;; we need the `dir-local-variables-alist' to be updated.
 	    ;; If we don't do this, we can end up saving a stale value of
 	    ;; CC Noise Macros in `ctune-prev-noise-macro-names' and
