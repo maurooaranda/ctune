@@ -73,9 +73,10 @@ CC Mode and directory variables of Emacs (@pxref{Directory Variables,,,emacs,The
 @findex ctune-mode
 @vindex ctune-mode
 The @code{ctune} package defines a minor mode, @code{ctune-mode} that
-makes the addition and removal of CC Noise Macros easy.  To use it,
+makes the addition and removal of CC Noise Macros easy.  Major modes
+@code{c-mode}, @code{c++-mode} and @code{objc-mode} are supported.  To use it,
 you can toggle @code{ctune-mode} on, by typing @code{M-x ctune-mode}
-in an already loaded C Mode Buffer (a prefix argument positive always
+in an already loaded buffer (a prefix argument positive always
 activates the minor mode, while a negative one always disables it).
 When @code{ctune-mode} is active, a string ``ctune'' is visible in the
 mode line.
@@ -98,7 +99,7 @@ prefix argument to @code{ctune-add-noise-macro}.
 
 @vindex ctune-save-noise-macros-automatically
 @fnindex ctune-save-noise-macros
-If the CC Noise Macros values have changed during the editing of the C Mode
+If the CC Noise Macros values have changed during the editing of the
 buffer, you might want to save those changes, to take effect project-wide
 in your next editing session.  The automatic saving is controlled by the
 customizable variable @code{ctune-save-noise-macros-automatically}.  It can hold
