@@ -342,7 +342,7 @@ correspondent `dir-locals-file'."
 	    ;; If `c-noise-macro-names' or/and `c-noise-macro-with-parens-names'
 	    ;; haven't been made local (e.g., there's no entry for them
 	    ;; in `dir-locals-file', or in the file local variables,
-	    ;; we made them local here.
+	    ;; we make them local here.
 	    (make-local-variable 'c-noise-macro-names)
 	    (make-local-variable 'c-noise-macro-with-parens-names)
 	    ;; Add the ctune function for saving Noise Macros.
