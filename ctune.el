@@ -101,7 +101,7 @@
   "Customizable group of ctune options."
   :group 'c)
 
-;; Maybe users don't want to write to .dir-locals.el, so let them choose.
+;; Maybe users don't want to write to `dir-locals-file', so let them choose.
 (defcustom ctune-save-noise-macros-automatically 'ask
   "Specify how saving of CC Noise Macros in `dir-locals-file' is done.
 With a value of nil, ctune doesn't modify never the `dir-locals-file', unless
@@ -195,9 +195,9 @@ With optional argument REMOVEP non-nil, remove it."
     (message "%s added to Noise Macros" macro-name)))
 
 (defsubst ctune-save-directory-variable (mode sym)
-  "Add the value holded by SYM to the MODE entry in the .dir-locals.el file."
+  "Add the value holded by SYM to the MODE entry in the `dir-locals-file'."
   (add-dir-local-variable mode sym (symbol-value sym))
-  ;; Don't freak out: current-buffer is the .dir-locals.el buffer.
+  ;; Don't freak out: current-buffer is the `dir-locals-file' buffer.
   (write-file (expand-file-name buffer-file-name) nil)
   (kill-buffer))
 
@@ -262,7 +262,7 @@ does this command."
 
 ;;;###autoload
 (defun ctune-save-noise-macros ()
-  "Save the new values of Noise Macros to the .dir-locals.el file.
+  "Save the new values of Noise Macros to the `dir-locals-file'.
 Saves the values of `c-noise-macro-names' and `c-noise-macro-with-parens-names'
 as `add-dir-local-variable' would do interactively."
   (interactive)
@@ -317,7 +317,7 @@ For saving the changes, either customize the option
 `ctune-save-noise-macros-automatically' to a value of your choice, or use the
 command `ctune-save-noise-macros'.  This command will save the changed values
 of `c-noise-macro-names' and `c-noise-macro-with-parens-names' to the
-correspondent .dir-locals.el file."
+correspondent `dir-locals-file'."
   :lighter " ctune" :group 'ctune :keymap ctune-minor-mode-map
   (if (memq major-mode '(c-mode c++-mode objc-mode))
       (if ctune-mode
@@ -341,8 +341,8 @@ correspondent .dir-locals.el file."
 				    dir-local-variables-alist))))
 	    ;; If `c-noise-macro-names' or/and `c-noise-macro-with-parens-names'
 	    ;; haven't been made local (e.g., there's no entry for them
-	    ;; in .dir-locals.el, or in the file local variables, we made them
-	    ;; local here.
+	    ;; in `dir-locals-file', or in the file local variables,
+	    ;; we made them local here.
 	    (make-local-variable 'c-noise-macro-names)
 	    (make-local-variable 'c-noise-macro-with-parens-names)
 	    ;; Add the ctune function for saving Noise Macros.
