@@ -226,7 +226,6 @@ This function is hooked into `kill-buffer-hook' and `kill-emacs-hook'."
 
 ;; Commands:
 
-;;;###autoload
 (defun ctune-add-noise-macro (&optional removep)
   "Add or remove the macro name at point to the Noise Macro names of CC Mode.
 With a prefix argument REMOVEP non-nil, remove the macro name.
@@ -262,7 +261,6 @@ does this command."
 				  removep))
       (error "No symbol at point!"))))
 
-;;;###autoload
 (defun ctune-save-noise-macros ()
   "Save the new values of Noise Macros to the `dir-locals-file'.
 Saves the values of `c-noise-macro-names' and `c-noise-macro-with-parens-names'
