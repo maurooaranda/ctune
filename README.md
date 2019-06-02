@@ -22,6 +22,13 @@ and keep editing, without that Noise Macro interfering.
 
 ## Installation
 
+Since June 2019, ctune is available on [MELPA](https://melpa.org/).
+Typing:
+`M-x package-install RET ctune RET`
+it's enough.
+
+Alternatively, you can follow these steps:
+
 - Download and open up a terminal in ctune dir.
 - `make`
 - Add the directory where ctune is to your load path.
