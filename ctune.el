@@ -355,4 +355,15 @@ correspondent `dir-locals-file'."
 
 (provide 'ctune)
 
+;;; Version Improvements:
+;; This list of changes is not exhaustive, but should be good enough for
+;; reference.
+;;
+;; Version 0.2:
+;; - Automatic fontification after changing CC Noise Macros.
+;;
+;; Version 0.1:
+;; - First released version of `ctune'.
+;; - Added all the basic functionality.
+
 ;;; ctune.el ends here
