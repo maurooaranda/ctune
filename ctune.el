@@ -3,8 +3,8 @@
 ;; Copyright (C) 2019 Mauro Aranda.
 
 ;; Author: Mauro Aranda <maurooaranda@gmail.com>
-;; Version: 0.1
-;; Package-Version: 0.1
+;; Version: 0.2
+;; Package-Version: 0.2
 ;; Package-Requires: ((emacs "26.1"))
 ;; Keywords: c convenience
 ;; URL:  https://github.com/maurooaranda/ctune
@@ -64,10 +64,6 @@
 ;; file.
 
 ;;; Suggestions/Ideas:
-
-;; Maybe we can ask the user if we can "mess" a little with the file, in order
-;; to force the fontification code of CC Mode to trigger.  Or maybe we can
-;; trigger it without "messing" with the file.
 
 ;; GNU C Coding Conventions, and other coding conventions as well, say that
 ;; macro names should be all upper case.  Maybe check that when asked to add
@@ -194,7 +190,11 @@ With optional argument REMOVEP non-nil, remove it."
     ;; and not only the variables.
     (add-to-list macro-names-list macro-name t)
     (c-make-noise-macro-regexps)
-    (message "%s added to Noise Macros" macro-name)))
+    (message "%s added to Noise Macros" macro-name))
+  ;; We don't mess with the buffer contents, but force fontification of the
+  ;; buffer in a smart way.  The region passed as argument is small, so it
+  ;; shouldn't be a problem if `macro-name' wasn't a Noise Macro.
+  (run-hook-with-args 'after-change-functions (point) (1+ (point)) 0))
 
 (defsubst ctune-save-directory-variable (mode sym)
   "Add the value holded by SYM to the MODE entry in the `dir-locals-file'."
