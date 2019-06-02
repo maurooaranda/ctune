@@ -96,6 +96,9 @@ Using @code{ctune} is quite easy.  To add a CC Noise Macro, all you have to do
 is navigate to the identifier and execute the command @code{ctune-add-noise-macro}.  This will add the identifier as a string to the lists mantained by CC Mode.
 If instead you want to remove an identifier from those lists, you give a
 prefix argument to @code{ctune-add-noise-macro}.
+Right after the modification of CC Noise Macros, @code{ctune} will
+force the fontification to be updated, so you will notice the effect
+of adding (or deleting) the CC Noise Macro immediately.
 
 @vindex ctune-save-noise-macros-automatically
 @fnindex ctune-save-noise-macros
