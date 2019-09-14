@@ -319,39 +319,43 @@ command `ctune-save-noise-macros'.  This command will save the changed values
 of `c-noise-macro-names' and `c-noise-macro-with-parens-names' to the
 correspondent `dir-locals-file'."
   :lighter " ctune" :group 'ctune :keymap ctune-minor-mode-map
-  (if (memq major-mode '(c-mode c++-mode objc-mode))
-      (if ctune-mode
-	  (progn
-	    ;; In order to work either when `ctune-mode' is activated from
-	    ;; a CC Mode hook or being toggled on in an already loaded buffer,
-	    ;; we need the `dir-local-variables-alist' to be updated.
-	    ;; If we don't do this, we can end up saving a stale value of
-	    ;; CC Noise Macros in `ctune-prev-noise-macro-names' and
-	    ;; `ctune-prev-noise-macro-with-parens-names'.
-	    (hack-dir-local-variables)
-	    ;; We need a copy of the lists, and not the actual list,
-	    ;; so that changes are independent.
-	    (setq-local ctune-prev-noise-macro-names
-			(copy-sequence
-			 (cdr (assq 'c-noise-macro-names
-				    dir-local-variables-alist))))
-	    (setq-local ctune-prev-noise-macro-with-parens-names
-			(copy-sequence
-			 (cdr (assq 'c-noise-macro-with-parens-names
-				    dir-local-variables-alist))))
-	    ;; If `c-noise-macro-names' or/and `c-noise-macro-with-parens-names'
-	    ;; haven't been made local (e.g., there's no entry for them
-	    ;; in `dir-locals-file', or in the file local variables,
-	    ;; we make them local here.
-	    (make-local-variable 'c-noise-macro-names)
-	    (make-local-variable 'c-noise-macro-with-parens-names)
-	    ;; Add the ctune function for saving Noise Macros.
-	    (dolist (hook '(kill-buffer-hook kill-emacs-hook))
-	      (add-hook hook #'ctune-save-noise-macros-maybe nil t)))
-	(dolist (hook '(kill-buffer-hook kill-emacs-hook))
-	  (remove-hook hook #'ctune-save-noise-macros-maybe t)))
-    (setq ctune-mode nil)
-    (error "Major mode %s not supported!" major-mode)))
+  (let ((supported (memq major-mode '(c-mode c++-mode objc-mode))))
+    (cond ((and supported (buffer-file-name))
+	   (if ctune-mode
+	       (progn
+		 ;; In order to work either when `ctune-mode' is activated from
+		 ;; a CC Mode hook or being toggled on in an already loaded
+		 ;; buffer,  we need the `dir-local-variables-alist' to be
+		 ;; updated.
+		 ;; If we don't do this, we can end up saving a stale value of
+		 ;; CC Noise Macros in `ctune-prev-noise-macro-names' and
+		 ;; `ctune-prev-noise-macro-with-parens-names'.
+		 (hack-dir-local-variables)
+		 ;; We need a copy of the lists, and not the actual list,
+		 ;; so that changes are independent.
+		 (setq-local ctune-prev-noise-macro-names
+			     (copy-sequence
+			      (cdr (assq 'c-noise-macro-names
+					 dir-local-variables-alist))))
+		 (setq-local ctune-prev-noise-macro-with-parens-names
+			     (copy-sequence
+			      (cdr (assq 'c-noise-macro-with-parens-names
+					 dir-local-variables-alist))))
+		 ;; If `c-noise-macro-names' or/and
+		 ;; `c-noise-macro-with-parens-names' haven't been made local
+		 ;; (e.g., there's no entry for them in `dir-locals-file',
+		 ;; or in the file local variables, we make them local here.
+		 (make-local-variable 'c-noise-macro-names)
+		 (make-local-variable 'c-noise-macro-with-parens-names)
+		 ;; Add the ctune function for saving Noise Macros.
+		 (dolist (hook '(kill-buffer-hook kill-emacs-hook))
+		   (add-hook hook #'ctune-save-noise-macros-maybe nil t)))
+	     (dolist (hook '(kill-buffer-hook kill-emacs-hook))
+	       (remove-hook hook #'ctune-save-noise-macros-maybe t))))
+	  (t
+	   (setq ctune-mode nil)
+	   (unless supported
+	     (error "Major mode %s not supported!" major-mode))))))
 
 (provide 'ctune)
 
@@ -361,7 +365,8 @@ correspondent `dir-locals-file'."
 ;;
 ;; Version 0.2:
 ;; - Automatic fontification after changing CC Noise Macros.
-;;
+;; - Don't activate `ctune' in non-visiting file buffers.
+;; 
 ;; Version 0.1:
 ;; - First released version of `ctune'.
 ;; - Added all the basic functionality.
