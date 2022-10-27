@@ -1,6 +1,6 @@
 ;;; ctune.el --- Tune out CC Mode Noise Macros -*- lexical-binding: t -*-
 
-;; Copyright (C) 2019-2021 Mauro Aranda.
+;; Copyright (C) 2019-2022 Mauro Aranda.
 
 ;; Author: Mauro Aranda <maurooaranda@gmail.com>
 ;; Version: 0.2

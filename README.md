@@ -64,4 +64,4 @@ Read the ctune.info manual, for more.
 ## License
 
 - **[GPL 3](https://www.gnu.org/licenses/gpl-3.0-standalone.html)**
-- Copyright 2021 Mauro Aranda
+- Copyright 2021-2022 Mauro Aranda
