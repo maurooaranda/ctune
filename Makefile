@@ -1,4 +1,4 @@
-# Copyright (C) 2019-2023 Mauro Aranda
+# Copyright (C) 2019-2025 Mauro Aranda
 
 # This file is part of ctune.
 
