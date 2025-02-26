@@ -136,7 +136,7 @@ keybinding to bind to the command."
 ;; saving, or even prompting.  So we need to store the appropriate variables
 ;; to save.
 (defvar ctune-save-these-vars nil
-  "List that holds  what variables of Noise Macros to save.
+  "List that holds what variables of Noise Macros to save.
 That is, can contain nil, the symbols with-parens or/and without-parens.")
 
 ;; Helper functions:
