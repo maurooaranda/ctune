@@ -1,6 +1,6 @@
 ;;; ctune.el --- Tune out CC Mode Noise Macros -*- lexical-binding: t -*-
 
-;; Copyright (C) 2019-2023 Mauro Aranda.
+;; Copyright (C) 2019-2025 Mauro Aranda.
 
 ;; Author: Mauro Aranda <maurooaranda@gmail.com>
 ;; Version: 0.2
@@ -81,8 +81,7 @@
 	  (version< emacs-version "26.1"))
   (error "Emacs 26.1 or more required"))
 
-;; Require cl-lib only when saving.
-;; We use cl-set-exclusive-or, but that is autoloaded, so we don't load
+;; We use `cl-set-exclusive-or', but that is autoloaded, so we don't load
 ;; cl-lib until needed.
 (eval-when-compile
   (require 'cl-lib))
@@ -102,15 +101,13 @@
 ;; Maybe users don't want to write to `dir-locals-file', so let them choose.
 (defcustom ctune-save-noise-macros-automatically 'ask
   "Specify how saving of CC Noise Macros in `dir-locals-file' is done.
-With a value of nil, ctune doesn't modify never the `dir-locals-file', unless
+With a value of nil, ctune never modifies the `dir-locals-file', unless
 you execute `ctune-save-noise-macros'.  With a value of t, ctune saves the
 new values of the CC Noise Macros when killing the buffer or killing Emacs.
-When set to 'ask, you will be prompted about saving the new values when
-killing the buffer or killing Emacs."
+When set to ask, ctune prompts you when killing the buffer or killing Emacs."
   :type '(choice (const :tag "Never" nil)
 		 (const :tag "Always" t)
 		 (const :tag "Ask me" ask))
-  :group 'ctune
   :version "26.1"
   :package-version '(ctune . "0.1"))
 
@@ -120,7 +117,6 @@ killing the buffer or killing Emacs."
 KEYS are the command names, while VALUES are the strings that represent the
 keybinding to bind to the command."
   :type 'alist
-  :group 'ctune
   :version "26.1"
   :package-version '(ctune . "0.1"))
 
@@ -140,14 +136,15 @@ keybinding to bind to the command."
 ;; saving, or even prompting.  So we need to store the appropriate variables
 ;; to save.
 (defvar ctune-save-these-vars nil
-  "List that holds what variables of Noise Macros to save.
-That is, can contain nil, 'with-parens, 'without-parens or both.")
+  "List that holds  what variables of Noise Macros to save.
+That is, can contain nil, the symbols with-parens or/and without-parens.")
 
 ;; Helper functions:
 
 ;; I find `thing-at-point' buggy in this case, so this should be a replacement.
 (defun ctune-symbol-at-point-strict (&optional no-properties)
   "Find the symbol at point, returning it as a string.
+
 Doesn't report a symbol on a whitespace, as `thing-at-point' does in some
 occasions.
 Argument NO-PROPERTIES means the same as in `thing-at-point'."
@@ -174,6 +171,7 @@ Argument NO-PROPERTIES means the same as in `thing-at-point'."
 
 (defsubst ctune--add-noise-macro (macro-name macro-names-list &optional removep)
   "Add or remove the string MACRO-NAME to the list variable MACRO-NAMES-LIST.
+
 MACRO-NAMES-LIST should be one of `c-noise-macro-names' or
 `c-noise-macro-with-parens-names'.
 With optional argument REMOVEP non-nil, remove it."
@@ -197,7 +195,7 @@ With optional argument REMOVEP non-nil, remove it."
   (run-hook-with-args 'after-change-functions (point) (1+ (point)) 0))
 
 (defsubst ctune-save-directory-variable (mode sym)
-  "Add the value holded by SYM to the MODE entry in the `dir-locals-file'."
+  "Add the value of SYM to the MODE entry in the `dir-locals-file'."
   (add-dir-local-variable mode sym (symbol-value sym))
   ;; Don't freak out: current-buffer is the `dir-locals-file' buffer.
   (write-file (expand-file-name buffer-file-name) nil)
@@ -205,8 +203,9 @@ With optional argument REMOVEP non-nil, remove it."
 
 (defun ctune-save-noise-macros-maybe ()
   "Save Noise Macros, if the user wants to.
-Only ask the user when `ctune-save-noise-macros-automatically' is 'ask.
-This function is hooked into `kill-buffer-hook' and `kill-emacs-hook'."
+
+Only ask the user when `ctune-save-noise-macros-automatically' is ask.
+This function is for the `kill-buffer-hook' and `kill-emacs-hook' hooks."
   ;; Don't even bother checking the values, if user doesn't want to save.
   (when ctune-save-noise-macros-automatically
     (if (cl-set-exclusive-or ctune-prev-noise-macro-names
@@ -228,9 +227,10 @@ This function is hooked into `kill-buffer-hook' and `kill-emacs-hook'."
 
 (defun ctune-add-noise-macro (&optional removep)
   "Add or remove the macro name at point to the Noise Macro names of CC Mode.
+
 With a prefix argument REMOVEP non-nil, remove the macro name.
 
-The command finds if it should modify either `c-noise-macro-names' or
+The command finds out if it should modify either `c-noise-macro-names' or
 `c-noise-macro-with-parens-names', by looking forward for the presence of
 an opening parenthesis.
 
@@ -263,6 +263,7 @@ does this command."
 
 (defun ctune-save-noise-macros ()
   "Save the new values of Noise Macros to the `dir-locals-file'.
+
 Saves the values of `c-noise-macro-names' and `c-noise-macro-with-parens-names'
 as `add-dir-local-variable' would do interactively."
   (interactive)
@@ -303,15 +304,17 @@ as `add-dir-local-variable' would do interactively."
       (define-key map (kbd binding) #'ctune-save-noise-macros))
     map)
   "Keymap for `ctune-mode'.
+
 The keybindings can be customized by modifying the user option
 `ctune-kbd-alist'.")
 
 ;;;###autoload
 (define-minor-mode ctune-mode
   "Minor mode for easily managing CC Noise Macros, project-wide.
+
 To add a CC Noise Macro, navigate to the identifier and type
-\\[ctune-add-noise-macro].  If you want to
-remove the identifier from the CC Noise Macro lists, just pass a prefix argument
+\\[ctune-add-noise-macro].  If you want to remove the identifier
+from the CC Noise Macro lists, just pass a prefix argument
 to the `ctune-add-noise-macro' command.
 For saving the changes, either customize the option
 `ctune-save-noise-macros-automatically' to a value of your choice, or use the
@@ -325,7 +328,7 @@ correspondent `dir-locals-file'."
 	       (progn
 		 ;; In order to work either when `ctune-mode' is activated from
 		 ;; a CC Mode hook or being toggled on in an already loaded
-		 ;; buffer,  we need the `dir-local-variables-alist' to be
+		 ;; buffer, we need the `dir-local-variables-alist' to be
 		 ;; updated.
 		 ;; If we don't do this, we can end up saving a stale value of
 		 ;; CC Noise Macros in `ctune-prev-noise-macro-names' and
