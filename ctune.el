@@ -114,8 +114,8 @@ When set to ask, ctune prompts you when killing the buffer or killing Emacs."
 (defcustom ctune-kbd-alist
   '((ctune-add-noise-macro . "C-c C-#"))
   "Association list of keybindings for the minor mode `ctune-mode'.
-KEYS are the command names, while VALUES are the strings that represent the
-keybinding to bind to the command."
+Each element is of the form (COMMAND . KEYS) where COMMAND is a command
+name, while KEYS is a string that represents the keybinding for COMMAND."
   :type 'alist
   :version "26.1"
   :package-version '(ctune . "0.1"))
@@ -306,7 +306,11 @@ as `add-dir-local-variable' would do interactively."
   "Keymap for `ctune-mode'.
 
 The keybindings can be customized by modifying the user option
-`ctune-kbd-alist'.")
+`ctune-kbd-alist'.  If you want to handle the keybindings in a different way,
+just set `ctune-kbd-alist' to nil.
+
+Don't try adding other commands that aren't either
+`ctune-add-noise-macro' or `ctune-save-noise-macros', it won't work.")
 
 ;;;###autoload
 (define-minor-mode ctune-mode
