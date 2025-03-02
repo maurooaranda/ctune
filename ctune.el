@@ -234,7 +234,7 @@ The command finds out if it should modify either `c-noise-macro-names' or
 `c-noise-macro-with-parens-names', by looking forward for the presence of
 an opening parenthesis.
 
-Warning: DO NOT call it when point is not in a macro name, you will confuse it.
+Warning: DO NOT call it when point is not at a macro name, you will confuse it.
 CC Mode imposes no limits on what you can put as a Noise Macro, and neither
 does this command."
   (interactive "P")
