@@ -44,7 +44,7 @@ modify this GNU manual.''
 @node Top
 @top ctune
 
-This manual describes the 0.1 version of ctune.
+This manual describes the 0.2 version of ctune.
 
 @insertcopying
 @end ifnottex
