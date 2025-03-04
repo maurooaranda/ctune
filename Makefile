@@ -71,3 +71,6 @@ dist: info
 	tar -cf $(PACKAGE_TARNAME).tar $(DISTDIR)
 	rm -R $(DISTDIR)
 	gzip $(PACKAGE_TARNAME).tar
+
+check:
+	$(EMACS) -batch	-L ./ -L ./tests -l ert -l ctune-tests -f ert-run-tests-batch-and-exit ./tests/output.log
