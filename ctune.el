@@ -178,7 +178,7 @@ With optional argument REMOVEP non-nil, remove it."
   (if removep
       ;; Don't report removal, when the Noise Macro didn't exist.
       (if (not (member macro-name (symbol-value macro-names-list)))
-	  (error "%s is not a Noise Macro" macro-name)
+	  (user-error "%s is not a Noise Macro" macro-name)
 	(set macro-names-list (delete macro-name (symbol-value
 						  macro-names-list)))
 	(c-make-noise-macro-regexps)
@@ -239,9 +239,9 @@ CC Mode imposes no limits on what you can put as a Noise Macro, and neither
 does this command."
   (interactive "P")
   (unless (memq major-mode '(c-mode c++-mode objc-mode))
-    (error "Major mode %s not supported!" major-mode))
+    (user-error "Major mode %s not supported!" major-mode))
   (let ((name (if (nth 8 (syntax-ppss)) ; Are we in a string or a comment?
-		  (error "Point can't be at a comment or a string!")
+		  (user-error "Point can't be at a comment or a string!")
 		;; Don't use `thing-at-point', because it has troubles when
 		;; point is at a whitespace.  There's an easy workaround, but
 		;; it is not worth it.
@@ -259,7 +259,7 @@ does this command."
 				      'c-noise-macro-with-parens-names
 				    'c-noise-macro-names)
 				  removep))
-      (error "No symbol at point!"))))
+      (user-error "No symbol at point!"))))
 
 (defun ctune-save-noise-macros ()
   "Save the new values of Noise Macros to the `dir-locals-file'.
@@ -268,7 +268,7 @@ Saves the values of `c-noise-macro-names' and `c-noise-macro-with-parens-names'
 as `add-dir-local-variable' would do interactively."
   (interactive)
   (unless (memq major-mode '(c-mode c++-mode objc-mode))
-    (error "Major mode %s not supported!" major-mode))
+    (user-error "Major mode %s not supported!" major-mode))
   (save-excursion
     ;; No point in writing a loop for this two variables.  But sadly, we need
     ;; to write the file and kill the buffer each time.
@@ -362,7 +362,7 @@ correspondent `dir-locals-file'."
 	  (t
 	   (setq ctune-mode nil)
 	   (unless supported
-	     (error "Major mode %s not supported!" major-mode))))))
+	     (user-error "Major mode %s not supported!" major-mode))))))
 
 (provide 'ctune)
 
