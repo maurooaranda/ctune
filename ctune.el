@@ -169,12 +169,15 @@ Argument NO-PROPERTIES means the same as in `thing-at-point'."
 	c-noise-macro-with-parens-names
 	ctune-save-these-vars nil))
 
-(defsubst ctune--add-noise-macro (macro-name macro-names-list &optional removep)
+(defun ctune--add-noise-macro (macro-name macro-names-list &optional removep)
   "Add or remove the string MACRO-NAME to the list variable MACRO-NAMES-LIST.
 
 MACRO-NAMES-LIST should be one of `c-noise-macro-names' or
 `c-noise-macro-with-parens-names'.
 With optional argument REMOVEP non-nil, remove it."
+  (unless (memq macro-names-list
+                '(c-noise-macro-with-parens-names c-noise-macro-names))
+    (error "%s is not a list of Noise Macros" macro-names-list))
   (if removep
       ;; Don't report removal, when the Noise Macro didn't exist.
       (if (not (member macro-name (symbol-value macro-names-list)))

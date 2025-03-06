@@ -24,16 +24,26 @@
 (require 'ert)
 (require 'ctune)
 
+(defmacro ctune-test-with-buffer (&rest body)
+  "Evaluate BODY in a temporary buffer with major-mode `c-mode'."
+  `(with-temp-buffer
+     (c-mode)
+     ,@body))
+
 (ert-deftest ctune-test-symbol-at-point ()
   "Test that symbol at point reports a symbol if at it, nil if at a whitespace."
-  (with-temp-buffer
-    (c-mode)
-    (insert "#ifndef FOO_H\n#include <foo.h>\n#endif\n")
-    (goto-char (point-min))
-    (search-forward "FOO")
-    (should (string= (ctune-symbol-at-point-strict t) "FOO_H"))
-    (forward-char 2)
-    (should-not (string= (ctune-symbol-at-point-strict t) "FOO_H"))))
+  (ctune-test-with-buffer
+   (insert "#ifndef FOO_H\n#include <foo.h>\n#endif\n")
+   (goto-char (point-min))
+   (search-forward "FOO")
+   (should (string= (ctune-symbol-at-point-strict t) "FOO_H"))
+   (forward-char 2)
+   (should-not (string= (ctune-symbol-at-point-strict t) "FOO_H"))))
+
+(ert-deftest ctune-test-add-noise-macro-error ()
+  "Test that `ctune--add-noise-macro' fails upon a bad argument."
+  (ctune-test-with-buffer
+   (should-error (ctune--add-noise-macro "FOO" 'bar))))
 
 (provide 'ctune-tests)
 ;;; ctune-tests.el ends here
