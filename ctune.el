@@ -83,6 +83,7 @@
 
 ;; We use `cl-set-exclusive-or', but that is autoloaded, so we don't load
 ;; cl-lib until needed.
+(require 'cl-seq)
 (eval-when-compile
   (require 'cl-lib))
 
