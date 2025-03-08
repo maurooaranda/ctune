@@ -45,5 +45,21 @@
   (ctune-test-with-buffer
    (should-error (ctune--add-noise-macro "FOO" 'bar))))
 
+(ert-deftest ctune-test-add-noise-macro ()
+  "Test that adding a noise macro works."
+  (ctune-test-with-buffer
+   (should-not c-noise-macro-names)
+   (ctune--add-noise-macro "_GL_ATTRIBUTE_PURE" 'c-noise-macro-names)
+   (should (string= "_GL_ATTRIBUTE_PURE" (car c-noise-macro-names)))))
+
+(ert-deftest ctune-test-remove-noise-macro ()
+  "Test that removing a noise macro works."
+  (ctune-test-with-buffer
+   (should-not c-noise-macro-names)
+   (ctune--add-noise-macro "_GL_ATTRIBUTE_PURE" 'c-noise-macro-names)
+   (should (string= "_GL_ATTRIBUTE_PURE" (car c-noise-macro-names)))
+   (ctune--add-noise-macro "_GL_ATTRIBUTE_PURE" 'c-noise-macro-names t)
+   (should-not c-noise-macro-names)))
+
 (provide 'ctune-tests)
 ;;; ctune-tests.el ends here
