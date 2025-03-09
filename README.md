@@ -45,9 +45,8 @@ Other way to build the file is to execute:
 ---
 
 ## Using
-
 Require the file in your .init file:
-(require 'ctune)
+`(require 'ctune)`
 
 To activate the minor mode, either type `M-x ctune-mode`, or eval
 `(ctune-mode 1)`
