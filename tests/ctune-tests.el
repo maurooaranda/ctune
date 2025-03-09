@@ -61,5 +61,9 @@
    (ctune--add-noise-macro "_GL_ATTRIBUTE_PURE" 'c-noise-macro-names t)
    (should-not c-noise-macro-names)))
 
+(ert-deftest ctune-test-save-directory-variable-error ()
+  (ctune-test-with-buffer
+   (should-error (ctune-save-directory-variable major-mode 'foo))))
+
 (provide 'ctune-tests)
 ;;; ctune-tests.el ends here

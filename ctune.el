@@ -198,8 +198,11 @@ With optional argument REMOVEP non-nil, remove it."
   ;; shouldn't be a problem if `macro-name' wasn't a Noise Macro.
   (run-hook-with-args 'after-change-functions (point) (1+ (point)) 0))
 
-(defsubst ctune-save-directory-variable (mode sym)
+(defun ctune-save-directory-variable (mode sym)
   "Add the value of SYM to the MODE entry in the `dir-locals-file'."
+  (unless (memq sym
+                '(c-noise-macro-with-parens-names c-noise-macro-names))
+    (error "%s is not a list of Noise Macros" sym))
   (add-dir-local-variable mode sym (symbol-value sym))
   ;; Don't freak out: current-buffer is the `dir-locals-file' buffer.
   (write-file (expand-file-name buffer-file-name) nil)
